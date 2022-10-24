@@ -25,7 +25,7 @@ class FetchAllWebhooksCommandTest extends TestCase
         'idModel' => 'trello-id-model-2',
         'description' => '',
         'callbackURL' => '',
-        'active' => 0,
+        'active' => 1,
         'consecutiveFailures' => 0,
         'firstConsecutiveFailDate' => '',
     ];
@@ -48,16 +48,15 @@ class FetchAllWebhooksCommandTest extends TestCase
                         $this->webhook1['id'],
                         $this->webhook1['idModel'],
                         $this->webhook1['active'],
-                        $this->webhook1['consecutiveFailures'
-                    ]
-                ],
+                        $this->webhook1['consecutiveFailures'],
+                    ],
                     [
                         $this->webhook2['id'],
                         $this->webhook2['idModel'],
                         $this->webhook2['active'],
-                        $this->webhook2['consecutiveFailures']
+                        $this->webhook2['consecutiveFailures'],
                     ],
-                ]
+                ],
             )->assertExitCode(0);
 
         Http::assertSentInOrder([
