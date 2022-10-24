@@ -34,5 +34,6 @@ return [
      'trello' => [
         'key' => env('TRELLO_API_KEY'),
         'token' => env('TRELLO_API_TOKEN'),
+        'oauth_secret' => env('TRELLO_OAUTH_SECRET')
     ],
 ];

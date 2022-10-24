@@ -6,20 +6,30 @@ use Tests\TestCase;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\VerifyTrelloIPsMiddleware;
+use App\Http\Middleware\VerifyTrelloWebhookSignatureMiddleware;
 
-class GetWebhooksTrelloTest extends TestCase
+class PostWebhooksTrelloTest extends TestCase
 {
     /** @test */
-    public function verify_trello_server_ip_middleware_is_applied_for_trello_get_request()
+    public function verify_trello_webhook_middleware_is_applied_for_trello_post_request()
     {
-        $this->assertContains(VerifyTrelloIPsMiddleware::class, $this->getMiddlewareFor('get.trello'));
+        $this->assertContains(VerifyTrelloWebhookSignatureMiddleware::class, $this->getMiddlewareFor('post.trello'));
     }
 
     /** @test */
-    function get_webhooks_trello()
+    public function verify_trello_server_ip_middleware_is_applied_for_trello_post_request()
+    {
+        $this->assertContains(VerifyTrelloIPsMiddleware::class, $this->getMiddlewareFor('post.trello'));
+    }
+
+    /** @test */
+    function post_webhooks_trello()
     {
         $response = $this->withoutMiddleware()
-            ->get('webhooks/trello');
+            ->postJson(
+                route('post.trello'),
+                ['idModel' => 'abc123']
+            );
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertContent('');
