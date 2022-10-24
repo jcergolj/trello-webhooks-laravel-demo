@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\DataObjects\WebhookData;
 use Illuminate\Http\Response;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
@@ -43,11 +44,8 @@ class FetchAllWebhooksCommand extends Command
             return Command::FAILURE;
         }
 
-        $webhooksRows = [];
-        foreach ($response->json() as $webhook) {
-            unset($webhook['description'], $webhook['firstConsecutiveFailDate'], $webhook['callbackURL']);
-            $webhooksRows[] = $webhook;
-        }
+        $webhookRows = WebhookData::collection($response->json())
+            ->only('id', 'idModel', 'active', 'consecutiveFailures');
 
         $this->table(
             [
@@ -56,7 +54,7 @@ class FetchAllWebhooksCommand extends Command
                 'active',
                 'consecutiveFailures',
             ],
-            $webhooksRows,
+            $webhookRows,
         );
 
         $this->line('Total number of webhooks: '.count($response->json()));
