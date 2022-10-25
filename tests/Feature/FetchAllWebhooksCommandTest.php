@@ -3,10 +3,10 @@
 namespace Tests\Feature;
 
 use Illuminate\Http\Client\Request;
-use Illuminate\Http\Response;
 use Illuminate\Http\Client\Response as ClientResponse;
-use Tests\TestCase;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Http;
+use Tests\TestCase;
 
 class FetchAllWebhooksCommandTest extends TestCase
 {
@@ -31,13 +31,13 @@ class FetchAllWebhooksCommandTest extends TestCase
     ];
 
     /** @test */
-    function fetch_all_webhooks()
+    public function fetch_all_webhooks()
     {
         Http::fake([
             '*' => Http::response([
                 $this->webhook1,
-                $this->webhook2
-            ])
+                $this->webhook2,
+            ]),
         ]);
 
         $this->artisan('trello-webhooks:all')
@@ -60,40 +60,40 @@ class FetchAllWebhooksCommandTest extends TestCase
             )->assertExitCode(0);
 
         Http::assertSentInOrder([
-            $this->assertFetchAllWebhooksRequest()
+            $this->assertFetchAllWebhooksRequest(),
         ]);
     }
 
     /** @test */
-    function webhooks_not_fetched()
+    public function webhooks_not_fetched()
     {
         Http::fake([
-            '*' => Http::response([], Response::HTTP_INTERNAL_SERVER_ERROR)
+            '*' => Http::response([], Response::HTTP_INTERNAL_SERVER_ERROR),
         ]);
 
         $this->artisan('trello-webhooks:all')
             ->assertExitCode(1);
 
         Http::assertSentInOrder([
-            $this->assertWebhookCreationFailsRequest()
+            $this->assertWebhookCreationFailsRequest(),
         ]);
     }
 
      protected function assertFetchAllWebhooksRequest()
-    {
-        return function (Request $request) {
-            $this->assertSame(
-                'https://api.trello.com/1/tokens/'.config('services.trello.token').'/webhooks',
-                $request->url()
-            );
+     {
+         return function (Request $request) {
+             $this->assertSame(
+                 'https://api.trello.com/1/tokens/'.config('services.trello.token').'/webhooks',
+                 $request->url()
+             );
 
-            $this->assertSame('GET', $request->method());
+             $this->assertSame('GET', $request->method());
 
-            $this->assertSame([], $request->data());
+             $this->assertSame([], $request->data());
 
-            return true;
-        };
-    }
+             return true;
+         };
+     }
 
     protected function assertWebhookCreationFailsRequest()
     {

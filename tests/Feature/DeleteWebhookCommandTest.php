@@ -3,58 +3,58 @@
 namespace Tests\Feature;
 
 use Illuminate\Http\Client\Request;
-use Illuminate\Http\Response;
 use Illuminate\Http\Client\Response as ClientResponse;
-use Tests\TestCase;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Http;
+use Tests\TestCase;
 
 class DeleteWebhookCommandTest extends TestCase
 {
     protected $trelloModelId = 'trello-model-id';
 
     /** @test */
-    function webhook_is_deleted()
+    public function webhook_is_deleted()
     {
         Http::fake([
-            '*' => Http::response()
+            '*' => Http::response(),
         ]);
 
         $this->artisan('trello-webhooks:delete '.$this->trelloModelId)->assertExitCode(0);
 
         Http::assertSentInOrder([
-            $this->assertDeleteWebhookRequest()
+            $this->assertDeleteWebhookRequest(),
         ]);
     }
 
     /** @test */
-    function webhook_is_not_deleted()
+    public function webhook_is_not_deleted()
     {
         Http::fake([
-            '*' => Http::response([], Response::HTTP_INTERNAL_SERVER_ERROR)
+            '*' => Http::response([], Response::HTTP_INTERNAL_SERVER_ERROR),
         ]);
 
         $this->artisan('trello-webhooks:delete '.$this->trelloModelId)->assertExitCode(1);
 
         Http::assertSentInOrder([
-            $this->assertWebhookDeletionFailsRequest()
+            $this->assertWebhookDeletionFailsRequest(),
         ]);
     }
 
      protected function assertDeleteWebhookRequest()
-    {
-        return function (Request $request) {
-            $this->assertSame(
-                'https://api.trello.com/1/webhooks/'.$this->trelloModelId,
-                $request->url()
-            );
+     {
+         return function (Request $request) {
+             $this->assertSame(
+                 'https://api.trello.com/1/webhooks/'.$this->trelloModelId,
+                 $request->url()
+             );
 
-            $this->assertSame('DELETE', $request->method());
+             $this->assertSame('DELETE', $request->method());
 
-            $this->assertSame([], $request->data());
+             $this->assertSame([], $request->data());
 
-            return true;
-        };
-    }
+             return true;
+         };
+     }
 
     protected function assertWebhookDeletionFailsRequest()
     {

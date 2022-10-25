@@ -2,11 +2,11 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\VerifyTrelloIPsMiddleware;
 use App\Http\Middleware\VerifyTrelloWebhookSignatureMiddleware;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Route;
+use Tests\TestCase;
 
 class PostWebhooksTrelloTest extends TestCase
 {
@@ -23,7 +23,7 @@ class PostWebhooksTrelloTest extends TestCase
     }
 
     /** @test */
-    function post_webhooks_trello()
+    public function post_webhooks_trello()
     {
         $response = $this->withoutMiddleware()
             ->postJson(

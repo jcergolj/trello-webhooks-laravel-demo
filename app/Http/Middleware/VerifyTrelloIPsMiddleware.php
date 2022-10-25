@@ -9,6 +9,7 @@ use Illuminate\Http\Response;
 class VerifyTrelloIPsMiddleware
 {
     const IP_START = '18.234.32.224';
+
     const IP_END = '18.234.32.239';
 
     /**

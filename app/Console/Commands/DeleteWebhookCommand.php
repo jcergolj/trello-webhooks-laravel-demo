@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Http\Response;
 use Illuminate\Console\Command;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Http;
 
 class DeleteWebhookCommand extends Command
@@ -27,7 +27,7 @@ class DeleteWebhookCommand extends Command
      *
      * @return int
      */
-     public function handle()
+    public function handle()
     {
         $authHeader = 'OAuth oauth_consumer_key="';
         $authHeader .= config('services.trello.key');

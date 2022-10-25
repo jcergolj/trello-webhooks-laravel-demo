@@ -3,8 +3,8 @@
 namespace App\Console\Commands;
 
 use App\DataObjects\WebhookData;
-use Illuminate\Http\Response;
 use Illuminate\Console\Command;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Http;
 
 class FetchAllWebhooksCommand extends Command

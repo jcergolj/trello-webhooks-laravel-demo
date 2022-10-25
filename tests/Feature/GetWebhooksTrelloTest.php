@@ -2,10 +2,10 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
+use App\Http\Middleware\VerifyTrelloIPsMiddleware;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
-use App\Http\Middleware\VerifyTrelloIPsMiddleware;
+use Tests\TestCase;
 
 class GetWebhooksTrelloTest extends TestCase
 {
@@ -16,7 +16,7 @@ class GetWebhooksTrelloTest extends TestCase
     }
 
     /** @test */
-    function get_webhooks_trello()
+    public function get_webhooks_trello()
     {
         $response = $this->withoutMiddleware()
             ->get('webhooks/trello');

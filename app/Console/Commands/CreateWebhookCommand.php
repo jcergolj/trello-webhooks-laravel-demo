@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Http\Response;
 use Illuminate\Console\Command;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Http;
 
 class CreateWebhookCommand extends Command
